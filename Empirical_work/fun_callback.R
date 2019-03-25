@@ -42,8 +42,7 @@ gmm_parallel<-function(y,D,X,Z,tau,alphaint,core){
   A=foreach(i = alphaint, .combine = "rbind") %dopar%{
     
     library(quantreg)
-    
-    beta<- rq.fit.lasso(X, y-i*D, tau = tau, lambda = 0, beta = .9995, eps = 1e-06)
+    beta<- rq.fit(X, y-i*D, tau = tau, method="br")
     e=beta$residuals
     hh=sd(e)*(4/3/length(e))^(1/5)
     distribition=akj(e,z=e,h = hh)$dens
@@ -73,8 +72,7 @@ non_gmm_parallel<-function(y,D,X,Z,tau,alphaint,core){
   A=foreach(i = alphaint, .combine = "rbind") %dopar%{
     
     library(quantreg)
-    
-    beta<- rq.fit.lasso(X, y-i*D, tau = tau, lambda = 0, beta = .9995, eps = 1e-06)
+    beta<-  rq.fit(X, y-i*D, tau = tau, method="br")
     e=beta$residuals
     hh=sd(e)*(4/3/length(e))^(1/5)
     distribition=akj(e,z=e,h = hh)$dens
