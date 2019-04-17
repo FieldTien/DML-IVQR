@@ -1,0 +1,197 @@
+import numpy as np
+import matplotlib.pyplot as plt
+import pandas as pd 
+
+tw_ci=pd.read_csv("twci.csv",sep=',')
+
+grid=np.array(tw_ci.grid)
+q15,q25,q50,q75,q85=np.array(tw_ci.q15),np.array(tw_ci.q25),np.array(tw_ci.q50),np.array(tw_ci.q75),np.array(tw_ci.q85)
+
+def tw10(grid,q10):
+    critical=np.repeat(3.84146,len(grid))
+    fig, ax = plt.subplots()
+    ax.plot(grid,critical,linestyle='--',label="critical point")
+    ax.plot(grid,q10,label="Quantile 0.15 GMM Objective Function ")
+    plt.xlim(0,6000)
+    plt.ylim(-5,50)
+    plt.plot([3737, 3737,], [-5,3.76882,], 'k-', linewidth=1.25)
+    plt.plot([2358, 2358,], [-5, 3.76882,], 'k-', linewidth=1.25)
+    plt.legend(loc="upper")
+    plt.title("Quantile 0.15 Impact Of P401 On Total Wealth")
+    #plt.show()
+    plt.savefig('tw15.png')     
+tw10(grid,q15) 
+def tw25(grid,q25):
+    critical=np.repeat(3.84146,len(grid))
+    fig, ax = plt.subplots()
+    ax.plot(grid,critical,linestyle='--',label="critical point")
+    ax.plot(grid,q25,label="Quantile 0.25 GMM Objective Function")
+    plt.xlim(1000,7000)
+    plt.ylim(-5,60)
+    plt.plot([4701, 4701,], [-5, 3.73697,], 'k-', linewidth=1.25)
+    plt.plot([3044, 3044,], [-5, 3.73697,], 'k-', linewidth=1.25)
+    plt.legend(loc="upper center")
+    plt.title("Quantile 0.25 Impact Of P401 On Total Wealth ")
+    #plt.show()
+    plt.savefig('tw25.png')  
+tw25(grid,q25) 
+
+
+
+def tw50(grid,q50):
+    critical=np.repeat(3.84146,len(grid))
+    fig, ax = plt.subplots()
+    ax.plot(grid,critical,linestyle='--',label="critical point")
+    ax.plot(grid,q50,label="Quantile 0.5 GMM Objective Function")
+    plt.xlim(5500,10500)
+    plt.ylim(-2.5,20)
+    plt.plot([6242, 6242,], [-5, 3.73697,], 'k-', linewidth=1.25)
+    plt.plot([10421,10421,], [-5, 3.80952,], 'k-', linewidth=1.25)
+    plt.legend(loc="upper center")
+    plt.title("Quantile 0.5 Impact Of P401 On Total Wealth ")
+    #plt.show()
+    plt.savefig('tw50.png')
+index=np.where(q50>10**5)
+q50=np.delete(q50, index)
+grid50=np.delete(grid, index)
+
+tw50(grid50,q50) 
+def tw75(grid,q75):
+    critical=np.repeat(3.84146,len(grid))
+    fig, ax = plt.subplots()
+    ax.plot(grid,critical,linestyle='--',label="critical point")
+    ax.plot(grid,q75,label="Quantile 0.75 GMM Objective Function")
+    plt.xlim(7000,17400)
+    plt.ylim(-2.5,20)
+    plt.plot([17211, 17211,], [-5, 3.65666,], 'k-', linewidth=1.25)
+    plt.plot([9600, 9600,], [-5, 3.93398,], 'k-', linewidth=1.25)
+    plt.legend(loc="upper right")
+    plt.title("Quantile 0.75 Impact Of P401 On Total Wealth ")
+    #plt.show('tw75.png')
+    plt.savefig('tw75.png')
+tw75(grid,q75) 
+
+
+def tw90(grid,q90):
+    critical=np.repeat(3.84146,len(grid))
+    fig, ax = plt.subplots()
+    ax.plot(grid,critical,linestyle='--',label="critical point")
+    ax.plot(grid,q90,label="Quantile 0.85 GMM Objective Function")
+    plt.xlim(6000,22500)
+    plt.ylim(-2.5,20)
+    plt.plot([9559, 9559,], [-5, 3.90422,], 'k-', linewidth=1.25)
+    plt.plot([18907, 18907,], [-5, 3.78247,], 'k-', linewidth=1.25)
+    plt.legend(loc="upper right")
+    plt.title("Quantile 0.85 Impact Of P401 On Total Wealth ")
+    #plt.show()
+    plt.savefig('tw85.png')
+
+index=np.where(q85>10**5)
+q85=np.delete(q85, index)
+grid85=np.delete(grid, index)    
+tw90(grid85,q85) 
+
+
+ci=pd.read_csv("nftaci.csv",sep=',')
+grid=np.array(ci.grid)
+q15,q25,q50,q75,q85=np.array(ci.q15),np.array(ci.q25),np.array(ci.q50),np.array(ci.q75),np.array(ci.q85)
+#index=np.where(q50>10**5)
+#q50=np.delete(q50, index)
+#grid50=np.delete(grid, index)
+
+
+
+def ntfa15(grid,q10):
+    critical=np.repeat(3.84146,len(grid))
+    fig, ax = plt.subplots()
+    ax.plot(grid,critical,linestyle='--',label="critical point")
+    ax.plot(grid,q10,label="Quantile 0.15 GMM Objective Function")
+    plt.xlim(-100,6000)
+    plt.ylim(-2.5,50)
+    plt.plot([3798, 3798,], [-5,3.76244,], 'k-', linewidth=1.25)
+    plt.plot([2392, 2392.2,], [-5,3.76244,], 'k-', linewidth=1.25)
+    plt.legend(loc="upper")
+    plt.title("Quantile 0.15 Impact Of P401 On Net Financial Assets")
+    #plt.show()
+    plt.savefig('nfta15.png')
+ntfa15(grid,q15)    
+
+
+def ntfa25(a10,q10):
+    critical=np.repeat(3.84146,len(a10))
+    fig, ax = plt.subplots()
+    ax.plot(a10,critical,linestyle='--',label="critical point")
+    ax.plot(a10,q10,label="Quantile 0.25 GMM Objective Function")
+    plt.xlim(1000,5500)
+    plt.ylim(-2.5,50)
+    plt.plot([3930, 3930,], [-5,3.92045,], 'k-', linewidth=1.25)
+    plt.plot([2696, 2696,], [-5,3.77841,], 'k-', linewidth=1.25)
+    plt.legend(loc="upper")
+    plt.title("Quantile 0.25 Impact Of P401 On Net Financial Assets")
+    #plt.show()
+    plt.savefig('nfta25.png')
+ntfa25(grid,q25) 
+def ntfa50(a10,q10):
+    critical=np.repeat(3.84146,len(a10))
+    fig, ax = plt.subplots()
+    ax.plot(a10,critical,linestyle='--',label="critical point")
+    ax.plot(a10,q10,label="Quantile 0.5 GMM Objective Function")
+    plt.xlim(4000,7900)
+    plt.ylim(-2.5,20)
+    plt.plot([7750, 7750,], [-5,3.92045,], 'k-', linewidth=1.25)
+    plt.plot([5058, 5058,], [-5,3.77841,], 'k-', linewidth=1.25)
+    plt.legend(loc="upper")
+    plt.title("Quantile 0.5 Impact Of P401 On Net Financial Assets")
+    #plt.show()
+    plt.savefig('nfta50.png')
+ntfa50(grid,q50) 
+
+def ntfa75(a10,q10):
+    critical=np.repeat(3.84146,len(a10))
+    fig, ax = plt.subplots()
+    ax.plot(a10,critical,linestyle='--',label="critical point")
+    ax.plot(a10,q10,label="Quantile 0.75 GMM Objective Function")
+    plt.xlim(10560,18201)
+    plt.ylim(-2.5,20)
+    plt.plot([11869, 11869,], [-2.5,3.77841,], 'k-', linewidth=1.25)
+    plt.plot([16799, 16799,], [-2.5,3.77841,], 'k-', linewidth=1.25)
+    plt.legend(loc="upper")
+    plt.title("Quantile 0.75 Impact Of P401 On Net Financial Assets")
+    #plt.show()
+    plt.savefig('nfta75.png')
+ntfa75(grid,q75) 
+
+def ntfa90(a10,q10):
+    critical=np.repeat(3.84146,len(a10))
+    fig, ax = plt.subplots()
+    ax.plot(a10,critical,linestyle='--',label="critical point")
+    ax.plot(a10,q10,label="Quantile 0.85 GMM Objective Function")
+    plt.xlim(14900,25000)
+    plt.ylim(-.5,10)
+    plt.plot([24200, 24200,], [-2.5,3.77841,], 'k-', linewidth=1.25)
+    plt.plot([15388, 15388,], [-2.5,3.77841,], 'k-', linewidth=1.25)
+    plt.legend(loc="upper")
+    plt.title("Quantile 0.85 Impact Of P401 On Net Financial Assets")
+    #plt.show()
+    plt.savefig('nfta85.png')     
+ntfa90(grid,q85) 
+
+
+
+def mainTW():
+    result=np.array([2700,2900,3200,3700,4500,5200,8000,8600,10300,8300,9300,12500,11500,12700,13200,13800,15500])
+    x=np.arange(0.1,0.95,0.05)
+    fig, ax = plt.subplots()
+    ax.plot(x,result, '-o', ms=8, lw=3, alpha=1, mfc='orange',label="Distribution effct of P401 on TW")
+    ax.legend(loc="upper left")
+    plt.savefig('tw.png')
+mainTW()    
+
+def mainNFTA():
+    result=np.array([3300,3000,3100,3300,3600,3900,4400,7500,11600,15000,17800,10200,12900,15900,16300,19700,20200])
+    x=np.arange(0.1,0.95,0.05)
+    fig, ax = plt.subplots()
+    ax.plot(x,result, '-o', ms=8, lw=3, alpha=1, mfc='orange',label="Distribution effct of P401 on NFTA")
+    ax.legend(loc="upper left")
+    plt.savefig('nfta.png')
+mainNFTA()   
