@@ -1,5 +1,5 @@
-# DML-QR
-### 環境需求(實測套件版本)：
+# DML-IVQR 
+### 環境需求(實測套件版本)： 
 - R version 3.4.3
 - quantreg 5.34
 - hdm 0.2.0
@@ -8,20 +8,55 @@
 - doSNOW 1.0.16
 
 
-### Simulation ：
-1. The fun_callback in simulation folder contains the HDM, IVQR-GMM with partialing out Z on X(gmm),  IVQR-GMM without partialing out Z on X(non-gmm).
+## fuction_callback：
+### Simulation:
+* **hdm_quantile(Y, D, X, Z, tau):** DML-IVQR
 
-2. The data generation process is extended by Exact computation of GMM estimators for instrumental variable quantile
-regression models, Journal of Applied Econometrics.
+* **gmm_quantile(Y, D, X, Z, tau):** GMM-IVQR with partialing out
 
-3. Monte Carlo Experiment 
+* **nongmm_quantile(Y, D, X, Z, tau):** GMM-IVQR  without partialing out
 
-    'exact' : Exact specification of IVQR-GMM  with partialing out Z on X(gmm).
+### Empirical: 
+* **gmm_parallel(Y, D, X, Z, tau, QTE_interval, number of core):** 
+  * GMM-IVQR with partialing out
+  
+  * Output: QTE, QTE_interval_loss
+* **nongmm_quantile(Y, D, X, Z, tau, QTE_interval, number of core):** 
+  * GMM-IVQR  without partialing out
+  
+  * Output: QTE, QTE_interval_loss
 
-    'nonexact'：Exact specification of IVQR-GMM  without partialing out Z on X(non-gmm).
-	
-	'fullgmm'：Mispecification of IVQR-GMM  with partialing out Z on X(gmm), containing many meaningless control variables.
-	
-	'hdm'：Mispecification of DML-QR, containing many meaningless control variables.
 
-### Empirical：
+* **hdm_rq_parallel(Y, D, X, Z, tau, QTE_interval, penaly_interval, number of core):** 
+  * DML-IVQR based on quantreg
+  
+  * Output: QTE, QTE_interval_loss, QTE_interval_value
+  * **seleted_nonzero(Y,X,tau,penalty):** Return nonzero control variable
+    
+* **hdm_parallel(Y, D, X, Z, tau, QTE_interval, number of core):**  
+  * DML-IVQR based on hqreg
+ 
+  * Output: QTE, QTE_interval_loss, QTE_interval_value
+  * **hqreg_seleted_nonzero(Y,X,tau,penalty):** Return nonzero control variable
+    
+## 401K Example 
+```gherkin=
+#=====================================================================
+#==========================Preprocessing==============================
+#=====================================================================
+source('Empirical_work/fun_callback.R')
+library(hdm)
+library(hqreg)
+library(quantreg)
+library(doSNOW)
+data=matrix(pension)
+alpha=matrix(data$p401)
+z=matrix(data$e401)
+y=matrix(data$net_tfa)
+control=cbind(data$i2,data$i3,data$i4,data$i5,data$i6,data$i7,data$a1,data$a2,data$a3,data$a4,data$marr,data$fsize)
+control=as.matrix(control,nrow=9915)
+
+#=============================Estimation==============================
+#=====================================================================
+hdm50=hdm_parallel(y,alpha,control,z,0.5,seq(0,35000,100),2)  
+```
